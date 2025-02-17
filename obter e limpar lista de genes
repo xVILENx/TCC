@@ -1,0 +1,33 @@
+wget https://ftp.ncbi.nlm.nih.gov/gene/DATA/gene_info.gz
+gunzip gene_info.gz
+cut -f3 gene_info > gene_id
+sort gene_id > gene_id_sorted
+uniq gene_id_sorted > gene_id_sorted_uniq
+
+sed 's/-.*//' gene_id_sorted_uniq | sed 's/_.*//' | grep -v ^LOC | sed '/^[0-9]/d' | sed 's/\..*//' | sed '/^[A-Za-z][0-9]/d' > gene_id_list.0
+
+sed '/^.\{1,2\}$/d' gene_id_list.0 > gene_id_list.1  # remove nomes com menos de 3 caracteres
+
+sed '/[;()]/d' gene_id_list.1 > gene_id_list.2  # remove linhas com ";", "(" ou ")"
+
+sed 's/.*/\U&/' gene_id_list.2 | sort | uniq > gene_id_list.3  # transforma tudo para maiúsculas
+
+sed '/ /d' gene_id_list.3 > gene_id_list.4  # remove linhas com espaço
+
+sed '/[0-9]\{3,\}/d' gene_id_list.4 > gene_id_list.5  # remove nomes com números com 3 ou mais dígitos  
+
+sed '/,/d' gene_id_list.5 | sort | uniq > gene_id_list.6  # tirando linhas com virgulas e duplicados
+
+sed "/\`/d" gene_id_list.6 > gene_id_list.7  # tira crase
+
+sed "/@/d" gene_id_list.7 > gene_id_list.8  # tirando linhas com @
+
+sed "/#/d" gene_id_list.8 > gene_id_list.9    # tirando linhas com #
+
+sed "/+/d" gene_id_list.9 > gene_id_list.10   # tirando linhas com + 
+
+sort gene_id_list.10 | uniq > gene_id_list.11  # ordena a lista de genes, descarta duplicatas
+
+sed "/'/d" gene_id_list.11 > gene_id_list.12   # tirando linhas com apóstrofe
+
+sed '/[:*\/]/d' gene_id_list.12 > gene_id_list.13  # linhas com : * e / ] são deletadas
