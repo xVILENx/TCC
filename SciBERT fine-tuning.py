@@ -259,11 +259,14 @@ for i, text in enumerate(train_texts):
 # Plotar a frequência dos genes (acumulados de todos os abstracts)
 gene_counts = Counter(all_genes)
 plt.figure(figsize=(22, 6))
-plt.bar(gene_counts.keys(), gene_counts.values(), color='lightgreen')
+bars = plt.bar(gene_counts.keys(), gene_counts.values(), color='lightgreen')
 plt.xlabel('Genes Identificados')
 plt.ylabel('Frequência')
 plt.title('Frequência de Genes nos Textos de Treinamento')
-plt.xticks(rotation=45)
+plt.xticks(rotation=90)
+for bar in bars:
+    yval = bar.get_height()  # Obtém a altura da barra
+    plt.text(bar.get_x() + bar.get_width()/2, yval + 0.2, str(yval), ha='center', va='bottom', fontsize=10)
 plt.show()
 
 # Plotar a frequência das doenças
