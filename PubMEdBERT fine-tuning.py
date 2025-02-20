@@ -279,6 +279,7 @@ for bar in bars:
     plt.text(bar.get_x() + bar.get_width()/2, yval + 0.15, str(yval), ha='center', va='bottom', fontsize=11)
 
 plt.show()
+
 # Plotar a frequência das doenças
 disease_counts = Counter(all_diseases)
 plt.figure(figsize=(8, 6))
