@@ -259,17 +259,26 @@ for i, text in enumerate(train_texts):
 
 # Plotar a frequência dos genes (acumulados de todos os abstracts)
 gene_counts = Counter(all_genes)
-plt.figure(figsize=(22, 6))
-bars = plt.bar(gene_counts.keys(), gene_counts.values(), color='lightgreen')
-plt.xlabel('Genes Identificados')
-plt.ylabel('Frequência')
-plt.title('Frequência de Genes nos Textos de Treinamento')
-plt.xticks(rotation=90)
-for bar in bars:
-    yval = bar.get_height()  # Obtém a altura da barra
-    plt.text(bar.get_x() + bar.get_width()/2, yval + 0.2, str(yval), ha='center', va='bottom', fontsize=10)
-plt.show()
 
+# Ordena os dados por frequência em ordem decrescente
+sorted_genes = sorted(gene_counts.items(), key=lambda x: x[1], reverse=True)
+genes, counts = zip(*sorted_genes)
+
+# Define as posições numéricas para cada barra
+x_positions = range(len(genes))
+
+plt.figure(figsize=(14, 6))  
+bars = plt.bar(x_positions, counts, color='lightgreen', width=0.6)
+plt.xlabel('Genes Identificados', fontsize=14)
+plt.ylabel('Frequência', fontsize=14)
+plt.title('Frequência de Genes nos Textos de Treinamento', fontsize=14)
+plt.xticks(x_positions, genes, rotation=90, fontsize=11, ha='center')
+plt.tight_layout()  
+for bar in bars:
+    yval = bar.get_height()
+    plt.text(bar.get_x() + bar.get_width()/2, yval + 0.15, str(yval), ha='center', va='bottom', fontsize=11)
+
+plt.show()
 # Plotar a frequência das doenças
 disease_counts = Counter(all_diseases)
 plt.figure(figsize=(8, 6))
